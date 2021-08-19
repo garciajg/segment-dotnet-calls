@@ -424,5 +424,13 @@ namespace segment_dotnet
                 { "call_to_schedule", callToScheduleInterview }, // boolean did the user call to schedule inteview
             });
         }
+
+        public static void PrintSummary()
+        {
+            Console.WriteLine($"Submitted: {Analytics.Client.Statistics.Submitted}");
+            Console.WriteLine($"Failed: {Analytics.Client.Statistics.Failed}");
+            Console.WriteLine($"Succeeded: {Analytics.Client.Statistics.Succeeded}");
+
+        }
     }
 }
