@@ -39,3 +39,11 @@ On `Program.cs`, there's a function called `RunAnalytics` that will execute all 
   - The `track` call when the user has finished leveling questions.
 - `TrackInterviewScheduled`
   - The `track` call when the user has successfully scheduled an interview.
+- `TrackJobPostingClicked`
+  - The `track` call when the user has clicked on a Job Posting.
+- `TrackSignedIn`
+  - The `track` call when the user logs in
+- `TrackJobSearched`
+  - The `track` call when the user searches for a job.
+- `TrackDashboardJobApplied`
+  - The `track` call when the user applies for a job directly from the list of jobs dashboard.

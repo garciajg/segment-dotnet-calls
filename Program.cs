@@ -142,6 +142,33 @@ namespace segment_dotnet
             var callForInterview = trueFalseOptions[rand.Next(trueFalseOptions.Length)];
 
             TrackInterviewScheduled(userId, brandPlaceHolder, interviewDate, interviewTime, noTimeSlot, callForInterview);
+
+            // Signed In Event 
+            // properties come from the Account Created event
+            TrackSignedIn(userId, brandPlaceHolder, method);
+
+            // Job Posting Clicked Event
+            var jobTitleClicked = "Warehouse manager";
+            var jobLocation = "Austin, TX";
+            var jobNumber = rand.Next(10000, 99999); // random number between 10,000 - 99,000
+            var employeeType = "Temp";
+            var basePay = 20.25;
+            var travel = trueFalseOptions[rand.Next(trueFalseOptions.Length)];
+            var paidRelocation = trueFalseOptions[rand.Next(trueFalseOptions.Length)];
+            var manageOthers = trueFalseOptions[rand.Next(trueFalseOptions.Length)];
+
+            TrackJobPostingClicked(userId, brandPlaceHolder, jobTitleClicked, jobLocation, jobNumber, employeeType, basePay, travel, paidRelocation, manageOthers);
+
+            // Job Searched Event
+            // Gets triggered when a user searches for a job
+            TrackJobSearched(userId, brandPlaceHolder, city, state, jobTitle);
+
+            // Dashboard Job Applied
+            // Gets triggered when applied directly from the list of jobs dashboard
+            var location = "Dallas";
+            TrackDashboardJobApplied(userId, brandPlaceHolder, jobNumber, basePay, location);
+
+
         }
 
         private static void IdentifyOnSignUp(string userId, string email)
@@ -169,6 +196,7 @@ namespace segment_dotnet
             Console.WriteLine("\fPostal Code: {0}", postalCode);
             Console.WriteLine("\tCountry: {0}", country);
             Console.WriteLine("\fPhone: {0}", phone);
+
             Analytics.Client.Identify(userId, new Traits() {
                 { "language", language }, // string user's preferred language
                 { "first_name", firstName }, // string user's first name
@@ -297,6 +325,7 @@ namespace segment_dotnet
             Console.WriteLine("\tPreferred Start Time: {0}", preferredStartTime);
             Console.WriteLine("\tShifts: {0}", shifts);
             Console.WriteLine("\tJob Types: {0}", jobTypes);
+
             Analytics.Client.Track(userId, "Preferences Completed", new Properties() {
                 { "source_brand", brandPlaceHolder }, //string  brand where event is being tracked from
                 { "ga_category", "Account Created" }, // string this will get mapped as a Google Analytics Event Category
@@ -422,6 +451,86 @@ namespace segment_dotnet
                 { "interview_time", interviewTime }, // string time of the interview
                 { "no_time_slot", noTimeSlot }, // boolean did the user not find a slot available
                 { "call_to_schedule", callToScheduleInterview }, // boolean did the user call to schedule inteview
+            });
+        }
+
+        private static void TrackJobPostingClicked(
+            string userId, string brandPlaceHolder, string jobTitle, string jobLocation,
+            int jobNumber, string employeeType, double basePay, bool travel, 
+            bool paidRelocation, bool manageOthers
+        ) 
+        {
+            Console.WriteLine("'Job Posting Clicked'");
+            Console.WriteLine("\tUser id: {0}", userId);
+            Console.WriteLine("\tBrand: {0}", brandPlaceHolder);
+            Console.WriteLine("\tJob Title: {0}", jobTitle);
+            Console.WriteLine("\tJob Location: {0}", jobLocation);
+            Console.WriteLine("\tJob Number: {0}", jobNumber);
+            Console.WriteLine("\tEmployee Type: {0}", employeeType);
+            Console.WriteLine("\tBase Pay: {0}", basePay);
+            Console.WriteLine("\tTravel: {0}", travel);
+            Console.WriteLine("\tPaid Relocation: {0}", paidRelocation);
+            Console.WriteLine("\tManage Others: {0}", manageOthers);
+ 
+            Analytics.Client.Track(userId, "Job Posting Clicked", new Properties() {
+                { "source_brand", brandPlaceHolder }, //string  brand where event is being tracked from
+                { "ga_category", "Job Posting" }, // string this will get mapped as a Google Analytics Event Category
+                { "job_title", jobTitle }, // string Job title
+                { "job_location", jobLocation }, // string Location of the job
+                { "job_number", jobNumber }, // int Identifying job number
+                { "employee_type", employeeType }, // string employee type
+                { "base_pay", basePay }, // double base pay for the job
+                { "travel", travel }, // boolean does the job require travel
+                { "paid_relocation", paidRelocation }, // boolean does job pay for relocation
+                { "manage_others", manageOthers} // boolean does the job require to manage others
+            });
+        }
+
+        private static void TrackSignedIn(string userId, string brandPlaceHolder, string method)
+        {
+            Console.WriteLine("'Signed In'\n\tUser id: {0} \n\tBrand: {1} \n\tMethod: {2}", userId, brandPlaceHolder, method);
+            Analytics.Client.Track(userId, "Signed In", new Properties() {
+                { "source_brand", brandPlaceHolder }, // string brand where event is being tracked from
+                { "ga_category", "Account Created" }, // string this will get mapped as a Google Analytics Event Category
+                { "method", method } // string one of: 'native' | 'apple',
+            });
+        }
+
+        // Gets triggered when a user searches for a job
+        private static void TrackJobSearched(string userId, string brandPlaceHolder, string city, string state, string jobTitle)
+        {
+            Console.WriteLine("'Job Searched'");
+            Console.WriteLine("\tUser id: {0}", userId);
+            Console.WriteLine("\tBrand: {0}", brandPlaceHolder);
+            Console.WriteLine("\tJob Title: {0}", jobTitle);
+            Console.WriteLine("\tCity: {0}", city);
+            Console.WriteLine("\tState: {0}", state);
+ 
+            Analytics.Client.Track(userId, "Job Searched", new Properties() {
+                { "source_brand", brandPlaceHolder }, //string  brand where event is being tracked from
+                { "ga_category", "Job Posting" }, // string this will get mapped as a Google Analytics Event Category
+                { "job_title", jobTitle }, // string Job title searched for
+                { "city", city }, // string City searched for jobs
+                { "state", state }, // string State searched for jobs
+            });
+        }
+
+        // Gets triggered when applied directly from the list of jobs dashboard
+        private static void TrackDashboardJobApplied(string userId, string brandPlaceHolder, int jobNumber, double basePay, string location)
+        {
+            Console.WriteLine("'Dashboard Job Applied'");
+            Console.WriteLine("\tUser id: {0}", userId);
+            Console.WriteLine("\tBrand: {0}", brandPlaceHolder);
+            Console.WriteLine("\tJob Number: {0}", jobNumber);
+            Console.WriteLine("\tBase Pay: {0}", basePay);
+            Console.WriteLine("\tLocation: {0}", location);
+ 
+            Analytics.Client.Track(userId, "Dashboard Job Applied", new Properties() {
+                { "source_brand", brandPlaceHolder }, //string  brand where event is being tracked from
+                { "ga_category", "Job Posting" }, // string this will get mapped as a Google Analytics Event Category
+                { "job_number", jobNumber }, // int Job number
+                { "base_pay", basePay }, // double Base pay offered
+                { "location", location }, // string Location of the job applying for
             });
         }
 
