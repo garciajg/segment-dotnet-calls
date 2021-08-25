@@ -1,10 +1,20 @@
+# Dotnet Segment Implementation
+
 Set up a `writeKey` env variable:
+
+You can create a `.env` file and add
+
+```
+writeKey=<<myKey>>
+```
+
+or simply run this in your terminal
 
 ```bash
 export writeKey=<<myKey>>
 ````
 
-On `Program.cs`, there's a function called `RunAnalytics` that will execute all track and identity events. These are the calls it will make:
+On `Program.cs`, there is a function called `RunAnalytics` that will execute all track and identity events. These are the calls it will make:
 
 **Identify Calls:**
 - `IdentifyOnSignUp`
@@ -19,6 +29,8 @@ On `Program.cs`, there's a function called `RunAnalytics` that will execute all 
   - The `identify` call when the user filled out their quick questions.
 - `IdentifyOnExperience`
   - The `identify` call when the user filled out their previous work experiences and details.
+- `IdentifyOnSelfIdentificationSurvery`
+  - The `identify` call when the user filled out their military status on self identification survery.
 
 **Track Calls:**
 - `TrackAccountCreated`
@@ -47,3 +59,45 @@ On `Program.cs`, there's a function called `RunAnalytics` that will execute all 
   - The `track` call when the user searches for a job.
 - `TrackDashboardJobApplied`
   - The `track` call when the user applies for a job directly from the list of jobs dashboard.
+- TrackJobPostingApplied`
+  - The `track` call when the user applies for a job from the job detail page
+
+Post-Interview Track Events
+- `TrackTaxCreditStarted`
+  - The `track` call when the user starts Tax Credit
+- `TrackTaxCreditQuestionnaireStarted`
+  - The `track` call when the user starts the Tax Credit Questionnair
+- `TrackSelfIdentificationSurveyStarted`
+  - The `track` call when the user start Self Identification Survery
+- `TrackSelfIdentificationSurveyCompleted`
+  - The `track` call when the user completes Self Identification Survey
+- `TrackDocumentationStarted`
+  - The `track` call when the user starts documentation
+- `TrackFormI9Started`
+  - The `track` call when the user starts Form I9
+- `TrackSafetyVideoStarted`
+  - The `track` call when the user starts start Safety Video section
+
+- `TrackSafetyVideoQuestion1Completed`
+  - The `track` call when the user starts Safety Video Questionnaire Part 1
+
+- `TrackSafetyVideoQuestion2Completed`
+  - The `track` call when the user starts Safety Video Questionnaire Part 2
+
+- `TrackSafetyVideoCompleted`
+  - The `track` call when the user completes Safety Video section
+
+- `TrackEssentialFunctionsStarted`
+  - The `track` call when the user starts Essential Functions
+
+- `TrackEssentialFunctionsCompleted`
+  - The `track` call when the user completes Essential Functions
+
+- `TrackReferAFriendStarted`
+  - The `track` call when the user starts Refer-a-friend
+
+- `TrackReferAFriendCompleted`
+  - The `track` call when the user completes Refer-a-friend
+
+- `TrackChatOpened`
+  - The `track` call when the user opens Chat.
